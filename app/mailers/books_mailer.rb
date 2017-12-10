@@ -16,4 +16,13 @@ class BooksMailer < ApplicationMailer
     mail(to: @borrower.email, subject: "Upływa termin zwrotu książki #{@book.title}")
   end
 
+  def book_reserved(book)
+    @book = book
+    @reservation = book.reservations.find_by(status: 'RESERVED')
+    return if !@reservation
+    @borrower = @reservation.user
+
+    mail(to: @borrower.email, subject: "Upływa termin zwrotu książki #{@book.title}")
+  end
+
 end
