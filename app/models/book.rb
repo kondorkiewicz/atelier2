@@ -25,6 +25,7 @@ class Book < ApplicationRecord
     else
       reservations.create(user: user, status: 'TAKEN')
     end
+    BooksMailer.book_taken(reservations.last).deliver_now
   end
 
   def can_give_back?(user)

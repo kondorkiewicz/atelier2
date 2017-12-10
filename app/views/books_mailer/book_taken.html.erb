@@ -1,0 +1,11 @@
+<h2>Hi <%= @user.email %>!</h2>
+
+<p>You've made reservation for <%= link_to @book.title, book_url(@book) %>.</p>
+
+<p>Reservation details:</p>
+
+<p>Made at <%= @reservation.created_at.to_date %>.</p>
+<p>Expires at <strong><%= @reservation.expires_at.to_date %><strong>.</p>
+
+
+<p>Happy reading!</p>

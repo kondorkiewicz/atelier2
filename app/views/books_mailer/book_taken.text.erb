@@ -1,0 +1,10 @@
+Hi <%= @user.email %>!
+
+You've made reservation for <%= @book.title %>.
+
+Reservation details:
+
+Made at <%= @reservation.created_at.to_date %>.
+Expires at <%= @reservation.expires_at.to_date %>.
+
+Happy reading!
