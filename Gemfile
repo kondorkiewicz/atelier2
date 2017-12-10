@@ -6,7 +6,7 @@ git_source(:github) do |repo_name|
 end
 
 gem 'devise'
-
+gem 'omniauth-google-oauth2'
 gem 'rails', '~> 5.1.2'
 gem 'pg'
 gem 'sqlite3'
