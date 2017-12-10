@@ -19,4 +19,23 @@ $(document).ready(function() {
     });
     e.preventDefault();
   });
-});
+
+  $('.x-autocomplete').each(function(i, obj) {
+    $(obj).easyAutocomplete({
+      url: '/api/v1/books/lookup',
+      getValue: obj.id,
+      list: {
+        match: {
+          enabled: true
+        },
+        onChooseEvent: function() {
+          $('.x-autocomplete').each(function(i, obj) {
+            var selectedData = $(obj).getSelectedItemData();
+            if (selectedData === -1) { $(obj).val(''); }
+          })
+        }
+      }
+    });
+  });
+
+  });
