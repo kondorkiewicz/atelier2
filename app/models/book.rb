@@ -21,11 +21,11 @@ class Book < ApplicationRecord
     return unless can_take?(user)
 
     if available_reservation.present?
+      perform_expiration_worker(available_reservation)
       available_reservation.update_attributes(status: 'TAKEN')
     else
-      reservations.create(user: user, status: 'TAKEN')
+      perform_expiration_worker(reservations.create(user: user, status: 'TAKEN'))
     end
-    BooksMailer.book_taken(reservations.last).deliver_now
   end
 
   def can_give_back?(user)
@@ -54,6 +54,10 @@ class Book < ApplicationRecord
   end
 
   private
+
+  def perform_expiration_worker(reservation)
+    ::BookExpirationWorker.perform_at(reservation.expires_at-1.day, reservation.book_id)
+  end
 
   def not_taken?
     reservations.find_by(status: 'TAKEN').nil?
