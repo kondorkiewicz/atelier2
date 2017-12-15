@@ -1,28 +1,27 @@
 require "rails_helper"
 
 RSpec.describe Book, type: :model do
-  subject { described_class.new }
+  let(:book) { described_class.new }
+  let(:user) { double }
+  let(:reservation) { double }
 
-  describe '#can_give_back?' do
-    let(:user) { User.new }
+  before do
+    allow(book).to receive_messages(reservations: array)
+  end
 
-    context 'without any reservations' do
-      it {
-        expect(subject.can_give_back?(user)).to be_falsey
-      }
+  describe "#can_reserve?" do
+    context "without reservations" do
+      let(:array) { instance_double(ActiveRecord::Relation, find_by: nil) }
+      it "should be truthy" do
+        expect(book.can_reserve?(user)).to be_truthy
+      end
     end
 
-    context 'with reservation' do
-      let(:reservation) { double }
-
-      before {
-        allow(subject).to receive_message_chain(:reservations, :find_by).with(no_args).
-          with(user: user, status: 'TAKEN').and_return(reservation)
-      }
-
-      it {
-        expect(subject.can_give_back?(user)).to be_truthy
-      }
+    context "with reservation" do
+      let(:array) { instance_double(ActiveRecord::Relation, find_by: reservation) }
+      it "should be falsey" do
+        expect(book.can_reserve?(user)).to be_falsey
+      end
     end
   end
 end

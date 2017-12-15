@@ -27,10 +27,6 @@ class Book < ApplicationRecord
     end
   end
 
-  def can_give_back?(user)
-    reservations.find_by(user: user, status: 'TAKEN').present?
-  end
-
   def give_back
     ActiveRecord::Base.transaction do
       reservations.find_by(status: 'TAKEN').update_attributes(status: 'RETURNED')
