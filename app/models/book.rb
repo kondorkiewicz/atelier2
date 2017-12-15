@@ -34,12 +34,8 @@ class Book < ApplicationRecord
     end
   end
 
-  def can_reserve?(user)
-    ::ReservedPolicy.new(user: user, book: self).applies?
-  end
-
   def reserve(user)
-    return unless can_reserve?(user)
+    return unless ::ReservedPolicy.new(user: user, book: self).applies?
 
     reservations.create(user: user, status: 'RESERVED')
   end
