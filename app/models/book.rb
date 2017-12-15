@@ -35,7 +35,7 @@ class Book < ApplicationRecord
   end
 
   def can_reserve?(user)
-    reservations.find_by(user: user, status: 'RESERVED').nil?
+    ::ReservedPolicy.new(user: user, book: self).applies?
   end
 
   def reserve(user)
