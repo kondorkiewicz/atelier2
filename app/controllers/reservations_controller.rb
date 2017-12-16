@@ -7,7 +7,7 @@ class ReservationsController < ApplicationController
   end
 
   def take
-    book.take(current_user) if book.can_take?(current_user)
+    book.take(current_user) if ::TakenPolicy.new(user: current_user, book: book).applies?
     redirect_to(book_path(book.id))
   end
 

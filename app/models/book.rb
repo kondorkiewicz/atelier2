@@ -18,7 +18,7 @@ class Book < ApplicationRecord
   end
 
   def take(user)
-    return unless can_take?(user)
+    return unless ::TakenPolicy.new(user: user, book: self).applies?
 
     if available_reservation.present?
       available_reservation.update_attributes(status: 'TAKEN')
