@@ -14,7 +14,7 @@ class Book < ApplicationRecord
   end
 
   def can_take?(user)
-    not_taken? && ( available_for_user?(user) || reservations.empty? )
+    ::TakenPolicy.new(user: user, book: self).applies?
   end
 
   def take(user)
@@ -45,26 +45,6 @@ class Book < ApplicationRecord
   end
 
   private
-
-  def not_taken?
-    reservations.find_by(status: 'TAKEN').nil?
-  end
-
-  def available_for_user?(user)
-    if available_reservation.present?
-      available_reservation.user == user
-    else
-      pending_reservations.nil?
-    end
-  end
-
-  def pending_reservations
-    reservations.find_by(status: 'PENDING')
-  end
-
-  def available_reservation
-    reservations.find_by(status: 'AVAILABLE')
-  end
 
   def next_in_queue
     reservations.where(status: 'RESERVED').order(created_at: :asc).first
