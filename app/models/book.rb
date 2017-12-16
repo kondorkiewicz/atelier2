@@ -27,6 +27,10 @@ class Book < ApplicationRecord
     end
   end
 
+  def available_reservation
+    reservations.find_by(status: 'AVAILABLE')
+  end
+
   def give_back
     ActiveRecord::Base.transaction do
       reservations.find_by(status: 'TAKEN').update_attributes(status: 'RETURNED')
