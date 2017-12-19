@@ -1,0 +1,5 @@
+defaults:
+  google_client_id: '608364362465-19n8g0n3mn94qp4ni4d5849teva2agnh.apps.googleusercontent.com'
+  google_client_secret: 'GCa1Z-StqaoNeJHW61AUUiy2'
+  default_calendar: { summary: 'atelier' }
+  app_host: 'http://localhost:3000'
